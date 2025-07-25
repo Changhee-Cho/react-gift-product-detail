@@ -65,24 +65,19 @@ export const useCreateOrder = ({
       const requestBody = buildOrderRequestBody(senderData);
       return await createOrderApi(userToken!, requestBody);
     },
-    onSuccess: (data, senderData) => {
+    onSuccess: (_data, senderData) => {
       const totalRecipientQuantity = recipients.reduce(
         (sum, r) => sum + (Number(r.quantity) || 0),
         0
       );
-
-      if (data?.success) {
-        alert(
-          `주문이 완료되었습니다.\n` +
-            `상품명: ${product!.name}\n` +
-            `구매 수량: ${totalRecipientQuantity}\n` +
-            `발신자 이름: ${senderData.senderName}\n` +
-            `메시지: ${senderData.letter}`
-        );
-        navigate(ROUTES.HOME);
-      } else {
-        alert('주문 처리에 실패했습니다. 다시 시도해주세요.');
-      }
+      alert(
+        `주문이 완료되었습니다.\n` +
+          `상품명: ${product!.name}\n` +
+          `구매 수량: ${totalRecipientQuantity}\n` +
+          `발신자 이름: ${senderData.senderName}\n` +
+          `메시지: ${senderData.letter}`
+      );
+      navigate(ROUTES.HOME);
     },
     onError: (error: unknown) => {
       if (axios.isAxiosError(error) && error.response?.status === 401) {
