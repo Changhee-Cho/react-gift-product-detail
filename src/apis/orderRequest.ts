@@ -14,9 +14,7 @@ interface OrderRequestBody {
 }
 
 interface CreateOrderResponse {
-  data: {
-    success: boolean;
-  };
+  success: boolean;
 }
 
 export const createOrder = async (
