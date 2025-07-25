@@ -55,7 +55,9 @@ export const useCreateOrder = (
     })),
   });
 
-  const sendOrderRequest = async (requestBody: ReturnType<typeof buildOrderRequestBody>) => {
+  const sendOrderRequest = async (
+    requestBody: ReturnType<typeof buildOrderRequestBody>
+  ) => {
     return await createOrderApi(userToken!, requestBody);
   };
 
@@ -76,7 +78,7 @@ export const useCreateOrder = (
     try {
       const response = await sendOrderRequest(requestBody);
 
-      if (response.status === 201 && response.data?.data?.success) {
+      if (response.data.success) {
         alert(
           `주문이 완료되었습니다.\n` +
             `상품명: ${product!.name}\n` +
@@ -89,12 +91,13 @@ export const useCreateOrder = (
         alert('주문 처리에 실패했습니다. 다시 시도해주세요.');
       }
     } catch (error: any) {
-      if (axios.isAxiosError(error) && error.response?.status === 401) {
-        alert('로그인이 필요합니다.');
-        navigate(ROUTES.LOGIN);
-      } else {
-        alert('알 수 없는 오류가 발생했습니다.');
-        console.error(error);
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 401) {
+          alert('로그인이 필요합니다.');
+          navigate(ROUTES.LOGIN);
+        } else if (error.response?.status === 400) {
+          alert('주문 데이터가 올바르지 않습니다. 다시 확인해주세요.');
+        }
       }
     } finally {
       setIsOrdering(false);
