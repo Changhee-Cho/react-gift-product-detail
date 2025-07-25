@@ -24,6 +24,7 @@ export type RankingProductParams = {
   rankType: string;
 };
 
+
 const fetchRankingProducts = async ({
   targetType,
   rankType,

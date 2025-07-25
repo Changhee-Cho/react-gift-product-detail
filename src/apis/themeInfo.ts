@@ -10,5 +10,6 @@ export const fetchThemeInfo = async (
   themeId: string | number
 ): Promise<themeInfo> => {
   const response = await apiClient.get<ThemeInfoResponse>(THEME_INFO(themeId));
+
   return response.data.data;
 };
