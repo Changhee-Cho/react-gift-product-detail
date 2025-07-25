@@ -19,15 +19,14 @@ export const useThemeInfo = (themeId: string | undefined) => {
     fetchThemeInfo(themeId)
       .then((data) => {
         setThemeInfo(data);
-        setLoading(false);
       })
       .catch((error: any) => {
-        setLoading(false);
         if (error.response?.status === 404) {
           toast.error(RESPONSE_404_ERROR_MSG);
           navigate(ROUTES.HOME);
         }
-      });
+      })
+      .finally(() => setLoading(false));
   }, [themeId, navigate]);
 
   return { themeInfo, loading };

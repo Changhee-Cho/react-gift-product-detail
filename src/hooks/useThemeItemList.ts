@@ -16,7 +16,6 @@ interface UseThemeItemListResult {
   hasMore: boolean;
   lastRef: (node: HTMLDivElement | null) => void;
 }
-
 export const useThemeItemList = (
   themeId: string | undefined
 ): UseThemeItemListResult => {
@@ -51,13 +50,20 @@ export const useThemeItemList = (
     }
   }, []);
 
+  const reset = useCallback(
+    (themeId: string) => {
+      setItems([]);
+      setCursor(0);
+      setHasMore(true);
+      fetchItems(themeId, 0);
+    },
+    [fetchItems]
+  );
+
   useEffect(() => {
     if (!themeId) return;
-    setItems([]);
-    setCursor(0);
-    setHasMore(true);
-    fetchItems(themeId, 0);
-  }, [themeId, fetchItems]);
+    reset(themeId);
+  }, [themeId, reset]);
 
   const lastRef = useCallback(
     (node: HTMLDivElement | null) => {

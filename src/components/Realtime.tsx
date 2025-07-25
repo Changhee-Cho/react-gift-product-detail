@@ -2,9 +2,9 @@ import { css } from '@emotion/react';
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import theme from '@src/styles/tokens/index';
-import loadingGif from '@src/assets/icons/loading.gif';
 import useRankingProducts from '@src/hooks/useRankingProducts';
 import ProductRankingList from '@src/components/ProductRankingList';
+import Loading from './common/Loading';
 
 const targets = [
   { key: 'ALL', label: '전체', icon: 'ALL' },
@@ -186,10 +186,6 @@ const loadingStyle = css`
   align-items: center;
 `;
 
-const loadingGifStyle = css`
-  width: 50px;
-`;
-
 const Realtime = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -261,11 +257,7 @@ const Realtime = () => {
   let content;
 
   if (loading) {
-    content = (
-      <div css={loadingStyle}>
-        <img css={loadingGifStyle} src={loadingGif} alt="Loading..." />
-      </div>
-    );
+    content = <Loading />;
   } else if (error) {
     content = (
       <div css={loadingStyle}>

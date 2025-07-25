@@ -1,9 +1,9 @@
 import { css } from '@emotion/react';
 import theme from '@src/styles/tokens/index';
-import loadingGif from '@src/assets/icons/loading.gif';
 import useThemeCategories from '@/hooks/useThemeCategories';
 import { Link } from 'react-router-dom';
-import { getThemePagePath } from '@/constants/routes';
+import { getThemePagePath } from '@/utils/path';
+import Loading from '@src/components/common/Loading';
 
 const spacer24 = css`
   width: 100%;
@@ -66,28 +66,11 @@ const itemBoxText = css`
   text-align: left;
 `;
 
-const loadingStyle = css`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 40px 0;
-  height: 320px;
-  padding: 8px;
-`;
-
-const loadingGifStyle = css`
-  width: 50px;
-`;
-
 const Maintheme = () => {
   const { categories, loading, error } = useThemeCategories();
 
   if (loading) {
-    return (
-      <div css={loadingStyle}>
-        <img css={loadingGifStyle} src={loadingGif} alt="Loading..." />
-      </div>
-    );
+    return <Loading />;
   }
 
   if (error || categories.length === 0) {

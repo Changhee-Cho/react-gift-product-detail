@@ -1,9 +1,9 @@
 import theme from '@/styles/tokens';
 import { css } from '@emotion/react';
-import loadingGif from '@src/assets/icons/loading.gif';
 import ThemeItemList from '@/components/ThemeItemList';
 import { useParams } from 'react-router-dom';
 import { useThemeInfo } from '@/hooks/useThemeInfo';
+import Loading from '@/components/common/Loading';
 
 const backgroundStyle = css`
   max-width: 720px;
@@ -58,28 +58,13 @@ const spacer4 = css`
   height: ${theme.spacing.spacing1};
   background-color: transparent;
 `;
-const loadingStyle = css`
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const loadingGifStyle = css`
-  width: 50px;
-`;
 
 const ThemeItemListPage = () => {
   const { themeId } = useParams<{ themeId: string }>();
   const { themeInfo, loading } = useThemeInfo(themeId);
 
   if (loading || !themeInfo) {
-    return (
-      <div css={loadingStyle}>
-        <img css={loadingGifStyle} src={loadingGif} alt="Loading..." />
-      </div>
-    );
+    return <Loading />;
   }
 
   return (

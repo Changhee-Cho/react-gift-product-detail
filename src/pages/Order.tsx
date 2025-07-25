@@ -11,10 +11,10 @@ import useOrderFormComplete, {
 } from '@/hooks/useOrderFormComplete';
 import { useParams } from 'react-router-dom';
 import { useState } from 'react';
-import loadingGif from '@src/assets/icons/loading.gif';
 import { useUserInfo } from '@/contexts/AuthContext';
 import { useFetchProduct } from '@/hooks/useFetchProduct';
 import { useCreateOrder } from '@/hooks/useCreateOrder';
+import Loading from '@/components/common/Loading';
 
 const sectionStyle = css`
   width: 100%;
@@ -44,22 +44,6 @@ const buttonStyle = css`
   line-height: 1.5rem;
   border: 0;
   cursor: pointer;
-`;
-
-const loadingDiv = css`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-`;
-
-const loadingGifStyle = css`
-  width: 50px;
 `;
 
 const space24 = css`
@@ -92,12 +76,7 @@ const Order = () => {
     await createOrder(data);
   };
 
-  if (!product || isFetchingProduct || isOrdering)
-    return (
-      <div css={loadingDiv}>
-        <img css={loadingGifStyle} src={loadingGif} alt="로딩중..." />
-      </div>
-    );
+  if (!product || isFetchingProduct || isOrdering) return <Loading />;
 
   return (
     <>
