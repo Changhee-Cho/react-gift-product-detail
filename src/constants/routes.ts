@@ -7,5 +7,4 @@ const ROUTES = {
   THEME_PAGE: '/themes/:themeId',
 } as const;
 
-export const getThemePagePath = (themeId: string) => `/themes/${themeId}`;
 export default ROUTES;

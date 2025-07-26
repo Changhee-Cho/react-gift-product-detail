@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { useAuthNavigation } from '@/hooks/useAuthNavigation';
 import loadingGif from '@src/assets/icons/loading.gif';
 import { useThemeItemList } from '@/hooks/useThemeItemList';
+import Loading from './common/Loading';
 
 const NO_ITEMS_MESSAGE = '상품이 없습니다.';
 
@@ -92,13 +93,6 @@ const noItemsText = css`
   width: 100%;
   text-align: center;
 `;
-const loadingStyle = css`
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
 const loadingGifStyle = css`
   width: 50px;
 `;
@@ -120,12 +114,7 @@ const ThemeItemList = () => {
     navigateIfLoggedIn(`/order/${id}`);
   };
 
-  if (loading && items.length === 0)
-    return (
-      <div css={loadingStyle}>
-        <img css={loadingGifStyle} src={loadingGif} alt="Loading..." />
-      </div>
-    );
+  if (loading && items.length === 0) return <Loading />;
 
   if (!items || items.length === 0)
     return (
@@ -153,7 +142,7 @@ const ThemeItemList = () => {
         })}
       </div>
       {hasMore && (
-        <div css={bottomLoading} ref={hasMore ? lastRef : undefined}>
+        <div css={bottomLoading} ref={lastRef}>
           <img
             css={loadingGifStyle}
             src={loadingGif}
