@@ -13,7 +13,6 @@ const rankingGrid = css`
   grid-template-columns: repeat(3, 1fr);
   gap: 24px 8px;
 `;
-
 const rankingItemBox = css`
   width: 100%;
   position: relative;
@@ -21,7 +20,6 @@ const rankingItemBox = css`
     cursor: pointer;
   }
 `;
-
 const rankingNumberWins = css`
   position: absolute;
   z-index: ${theme.zIndex.itemRankingBadge};
@@ -38,7 +36,6 @@ const rankingNumberWins = css`
   color: #fff;
   background-color: ${theme.colors.red600};
 `;
-
 const rankingNumber = css`
   position: absolute;
   z-index: ${theme.zIndex.itemRankingBadge};
@@ -55,11 +52,9 @@ const rankingNumber = css`
   color: #fff;
   background-color: ${theme.colors.textSub};
 `;
-
 const rankingItemInfo = css`
   width: 100%;
 `;
-
 const rankingItemImg = css`
   width: 100%;
   object-fit: cover;
@@ -67,7 +62,6 @@ const rankingItemImg = css`
   border-radius: 4px;
   overflow: hidden;
 `;
-
 const rankingItemBrand = css`
   overflow: hidden;
   text-overflow: ellipsis;
@@ -79,7 +73,6 @@ const rankingItemBrand = css`
   margin: 0px;
   text-align: left;
 `;
-
 const rankingItemName = css`
   font-size: 0.875rem;
   font-weight: 400;
@@ -91,7 +84,6 @@ const rankingItemName = css`
   text-overflow: ellipsis;
   display: -webkit-box;
 `;
-
 const rankingItemPrice = css`
   font-size: 1rem;
   font-weight: 700;
@@ -101,11 +93,9 @@ const rankingItemPrice = css`
   text-align: left;
   word-break: break-word;
 `;
-
 const spacer12 = css`
   height: 12px;
 `;
-
 const spacer4 = css`
   height: 4px;
 `;
@@ -130,8 +120,8 @@ const ProductRankingList = ({ products, expanded }: Props) => {
     ? EXPANDED_DISPLAY_COUNT
     : DEFAULT_DISPLAY_COUNT;
 
-  const goOrder = (id: number) => {
-    navigateIfLoggedIn(`/order/${id}`);
+  const goItem = (id: number) => {
+    navigateIfLoggedIn(`/product/${id}`);
   };
 
   return (
@@ -142,7 +132,7 @@ const ProductRankingList = ({ products, expanded }: Props) => {
           <div
             css={rankingItemBox}
             key={product.id}
-            onClick={() => goOrder(product.id)}
+            onClick={() => goItem(product.id)}
           >
             <span
               css={rank <= TOP_RANK_COUNT ? rankingNumberWins : rankingNumber}
