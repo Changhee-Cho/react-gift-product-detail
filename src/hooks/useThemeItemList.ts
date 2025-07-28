@@ -72,7 +72,7 @@ export const useThemeItemList = (
   return {
     items,
     loading: isLoading,
-    hasMore: !!hasNextPage,
+    hasMore: hasNextPage,
     lastRef,
   };
 };

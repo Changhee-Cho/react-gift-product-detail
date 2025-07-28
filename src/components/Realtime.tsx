@@ -4,7 +4,7 @@ import { useSearchParams } from 'react-router-dom';
 import theme from '@src/styles/tokens/index';
 import useRankingProducts from '@src/hooks/useRankingProducts';
 import ProductRankingList from '@src/components/ProductRankingList';
-import Loading from './common/Loading';
+import Loading from '@src/components/common/Loading';
 
 const targets = [
   { key: 'ALL', label: '전체', icon: 'ALL' },
@@ -254,41 +254,6 @@ const Realtime = () => {
     setExpanded(false);
   };
 
-  let content;
-
-  if (loading) {
-    content = <Loading />;
-  } else if (error) {
-    content = (
-      <div css={loadingStyle}>
-        <p>데이터를 불러오는 중 오류가 발생했습니다.</p>
-      </div>
-    );
-  } else if (products.length === 0) {
-    content = (
-      <div css={loadingStyle}>
-        <p>상품이 없습니다.</p>
-      </div>
-    );
-  } else {
-    content = (
-      <>
-        <ProductRankingList products={products} expanded={expanded} />
-        <div css={spacer32} />
-        <div css={moreButtonCover}>
-          <button
-            css={moreButton}
-            type="button"
-            onClick={() => setExpanded((prev) => !prev)}
-            disabled={loading || error || products.length === 0}
-          >
-            <p css={moreButtonText}>{expanded ? '접기' : '더보기'}</p>
-          </button>
-        </div>
-      </>
-    );
-  }
-
   return (
     <>
       <div css={spacer40} />
@@ -324,7 +289,34 @@ const Realtime = () => {
           ))}
         </div>
         <div css={spacer16} />
-        <section css={rankingDiv}>{content}</section>
+        <section css={rankingDiv}>
+          {loading ? (
+            <Loading />
+          ) : error ? (
+            <div css={loadingStyle}>
+              <p>데이터를 불러오는 중 오류가 발생했습니다.</p>
+            </div>
+          ) : products.length === 0 ? (
+            <div css={loadingStyle}>
+              <p>상품이 없습니다.</p>
+            </div>
+          ) : (
+            <>
+              <ProductRankingList products={products} expanded={expanded} />
+              <div css={spacer32} />
+              <div css={moreButtonCover}>
+                <button
+                  css={moreButton}
+                  type="button"
+                  onClick={() => setExpanded((prev) => !prev)}
+                  disabled={loading || error || products.length === 0}
+                >
+                  <p css={moreButtonText}>{expanded ? '접기' : '더보기'}</p>
+                </button>
+              </div>
+            </>
+          )}
+        </section>
       </section>
       <div css={spacer40} />
     </>

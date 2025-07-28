@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { useAuthNavigation } from '@/hooks/useAuthNavigation';
 import loadingGif from '@src/assets/icons/loading.gif';
 import { useThemeItemList } from '@/hooks/useThemeItemList';
-import Loading from './common/Loading';
+import Loading from '@src/components/common/Loading';
 
 const NO_ITEMS_MESSAGE = '상품이 없습니다.';
 
