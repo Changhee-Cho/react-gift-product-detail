@@ -3,8 +3,6 @@ import theme from '@src/styles/tokens/index';
 import useThemeCategories from '@/hooks/useThemeCategories';
 import { Link } from 'react-router-dom';
 import { getThemePagePath } from '@/utils/path';
-import Loading from '@src/components/common/Loading';
-
 const spacer24 = css`
   width: 100%;
   height: 24px;
@@ -67,11 +65,7 @@ const itemBoxText = css`
 `;
 
 const Maintheme = () => {
-  const { categories, loading, error } = useThemeCategories();
-
-  if (loading) {
-    return <Loading />;
-  }
+  const { categories, error } = useThemeCategories();
 
   if (error || categories.length === 0) {
     return null;

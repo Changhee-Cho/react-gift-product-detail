@@ -6,6 +6,8 @@ import logoIcon from '@src/assets/icons/logo.webp';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthNavigation } from '@/hooks/useAuthNavigation';
 import ROUTES from '@/constants/routes';
+import ErrorBoundary from './common/ErrorBoundary';
+import ErrorFallback from './common/ErrorFallback';
 
 const divStyle = css`
   width: 100%;
@@ -69,31 +71,37 @@ const Title = () => {
   };
 
   return (
-    <div css={divStyle}>
-      <div css={wrapperStyle}>
-        <nav css={navStyle}>
-          <div css={navSide}>
-            <button css={buttonStyle} onClick={goBack}>
-              <img src={arrowBackIcon} alt="뒤로 가기" />
-            </button>
-          </div>
-          <div css={logoWrapper}>
-            <Link to="/">
-              <img src={logoIcon} css={logoStyle} alt="카카오 선물하기 로고" />
-            </Link>
-          </div>
-          <div css={navSide}>
-            <button css={buttonStyle} onClick={goLogin}>
-              <img
-                style={{ height: '2rem' }}
-                src={personIcon}
-                alt="마이페이지"
-              />
-            </button>
-          </div>
-        </nav>
+    <ErrorBoundary fallback={<ErrorFallback />}>
+      <div css={divStyle}>
+        <div css={wrapperStyle}>
+          <nav css={navStyle}>
+            <div css={navSide}>
+              <button css={buttonStyle} onClick={goBack}>
+                <img src={arrowBackIcon} alt="뒤로 가기" />
+              </button>
+            </div>
+            <div css={logoWrapper}>
+              <Link to="/">
+                <img
+                  src={logoIcon}
+                  css={logoStyle}
+                  alt="카카오 선물하기 로고"
+                />
+              </Link>
+            </div>
+            <div css={navSide}>
+              <button css={buttonStyle} onClick={goLogin}>
+                <img
+                  style={{ height: '2rem' }}
+                  src={personIcon}
+                  alt="마이페이지"
+                />
+              </button>
+            </div>
+          </nav>
+        </div>
       </div>
-    </div>
+    </ErrorBoundary>
   );
 };
 

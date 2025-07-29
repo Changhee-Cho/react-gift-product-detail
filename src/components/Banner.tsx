@@ -50,7 +50,6 @@ const pTagStyle = css`
 
 const Banner = () => {
   const { user } = useUserInfo();
-
   return (
     <section css={bannerStyle}>
       <button css={buttonStyle}>

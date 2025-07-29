@@ -3,6 +3,8 @@ import theme from '@src/styles/tokens/index';
 import { useNavigate } from 'react-router-dom';
 import notfoundImg from '@src/assets/icons/img_not_found.png';
 import ROUTES from '@/constants/routes';
+import ErrorBoundary from '@/components/common/ErrorBoundary';
+import ErrorFallback from '@/components/common/ErrorFallback';
 
 const mainStyle = css`
   width: 100%;
@@ -77,19 +79,21 @@ const NotFound = () => {
   };
 
   return (
-    <div>
-      <main css={mainStyle}>
-        <img css={imgStyle} src={notfoundImg} alt="Not Found 이미지" />
-        <div css={space28} />
-        <h3 css={h3Style}>잘못된 접근입니다.</h3>
-        <div css={space8} />
-        <p css={pStyle}>찾으시는 페이지가 존재하지 않습니다.</p>
-        <div css={space48} />
-        <button css={buttonStyle} onClick={goHome}>
-          홈으로
-        </button>
-      </main>
-    </div>
+    <ErrorBoundary fallback={<ErrorFallback />}>
+      <div>
+        <main css={mainStyle}>
+          <img css={imgStyle} src={notfoundImg} alt="Not Found 이미지" />
+          <div css={space28} />
+          <h3 css={h3Style}>잘못된 접근입니다.</h3>
+          <div css={space8} />
+          <p css={pStyle}>찾으시는 페이지가 존재하지 않습니다.</p>
+          <div css={space48} />
+          <button css={buttonStyle} onClick={goHome}>
+            홈으로
+          </button>
+        </main>
+      </div>
+    </ErrorBoundary>
   );
 };
 

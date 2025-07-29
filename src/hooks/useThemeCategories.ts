@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import apiClient from '@src/lib/apiClient';
 import { PRESENT_THEMES_URL } from '@src/apis/constants';
 import { STALE_TIME } from '@/constants/apiReactQueryStaleTime';
@@ -10,7 +10,6 @@ type Theme = {
 };
 
 type ThemeState = {
-  loading: boolean;
   error: boolean;
   categories: Theme[];
 };
@@ -21,7 +20,7 @@ const fetchThemes = async (): Promise<Theme[]> => {
 };
 
 const useThemeCategories = (): ThemeState => {
-  const { data, isLoading, isError } = useQuery<Theme[], Error>({
+  const { data, isError } = useSuspenseQuery<Theme[], Error>({
     queryKey: ['themeCategories'],
     queryFn: fetchThemes,
     staleTime: STALE_TIME,
@@ -29,7 +28,6 @@ const useThemeCategories = (): ThemeState => {
   });
 
   return {
-    loading: isLoading,
     error: isError,
     categories: data ?? [],
   };

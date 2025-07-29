@@ -3,11 +3,12 @@ import ProductDetailTabs from '@/components/ProductDetail';
 import FixedButtons from '@/components/fixedButtonOnProductPage';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useProduct } from '@/hooks/useProduct';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { getOrderDetailPath } from '@/constants/routes';
 import { css } from '@emotion/react';
 import theme from '@/styles/tokens';
 import { useWishUpdateMutation } from '@/hooks/useWishUpdateMutation';
+import Loading from '@/components/common/Loading';
 
 const divCover = css`
   width: 100%;
@@ -50,19 +51,25 @@ const ProductPage = () => {
 
     updateWish();
   };
-
   return (
     <div css={divCover}>
-      <ProductThumbnail info={info} />
+      <Suspense fallback={<Loading />}>
+        <ProductThumbnail info={info} />
+      </Suspense>
       <div css={lineDiv8px} />
-      <ProductDetailTabs info={info} review={review} detail={detail} />
+      <Suspense fallback={<Loading />}>
+        <ProductDetailTabs info={info} review={review} detail={detail} />
+      </Suspense>
+
       <div css={spacer64} />
-      <FixedButtons
-        hearted={hearted}
-        wishCount={wishCount}
-        onHeartClick={handleHeartClick}
-        onOrderClick={goOrder}
-      />
+      <Suspense fallback={<Loading />}>
+        <FixedButtons
+          hearted={hearted}
+          wishCount={wishCount}
+          onHeartClick={handleHeartClick}
+          onOrderClick={goOrder}
+        />
+      </Suspense>
     </div>
   );
 };

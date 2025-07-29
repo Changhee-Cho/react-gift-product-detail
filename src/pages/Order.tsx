@@ -10,11 +10,11 @@ import useOrderFormComplete, {
   type SenderSchema,
 } from '@/hooks/useOrderFormComplete';
 import { useParams } from 'react-router-dom';
-import { useState } from 'react';
-import loadingGif from '@src/assets/icons/loading.gif';
+import { Suspense, useState } from 'react';
 import { useUserInfo } from '@/contexts/AuthContext';
 import { useFetchProduct } from '@/hooks/useFetchProduct';
 import { useCreateOrder } from '@/hooks/useCreateOrder';
+import PageLoading from '@/components/common/PageLoading';
 
 const sectionStyle = css`
   width: 100%;
@@ -46,29 +46,13 @@ const buttonStyle = css`
   cursor: pointer;
 `;
 
-const loadingDiv = css`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-`;
-
-const loadingGifStyle = css`
-  width: 50px;
-`;
-
 const space24 = css`
   height: 24px;
 `;
 
-const Order = () => {
+const OrderContent = () => {
   const { productId } = useParams();
-  const { product, loading: isFetchingProduct } = useFetchProduct(productId);
+  const { product } = useFetchProduct(productId);
   const [recipients, setRecipients] = useState<OrderSchema[]>([]);
   const [recipientModalOpen, setRecipientModalOpen] = useState(false);
   const methods = useOrderFormComplete();
@@ -92,12 +76,7 @@ const Order = () => {
     createOrder(data);
   };
 
-  if (!product || isFetchingProduct || isOrdering)
-    return (
-      <div css={loadingDiv}>
-        <img css={loadingGifStyle} src={loadingGif} alt="로딩중..." />
-      </div>
-    );
+  if (isOrdering) return <PageLoading />;
 
   return (
     <>
@@ -109,7 +88,7 @@ const Order = () => {
               onOpenRecipientModal={() => setRecipientModalOpen(true)}
               recipients={recipients}
             />
-            <ItemInfo product={product} />
+            {product && <ItemInfo product={product} />}
             <div css={space24} />
             <button type="submit" css={buttonStyle}>
               {totalOrderPrice.toLocaleString()}원 주문하기
@@ -125,6 +104,14 @@ const Order = () => {
         setRecipients={setRecipients}
       />
     </>
+  );
+};
+
+const Order = () => {
+  return (
+    <Suspense fallback={<PageLoading />}>
+      <OrderContent />
+    </Suspense>
   );
 };
 

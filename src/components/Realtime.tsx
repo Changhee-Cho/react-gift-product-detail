@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import theme from '@src/styles/tokens/index';
 import useRankingProducts from '@src/hooks/useRankingProducts';
@@ -186,6 +186,45 @@ const loadingStyle = css`
   align-items: center;
 `;
 
+const RankingSection = ({
+  targetType,
+  rankType,
+  expanded,
+  onToggleExpand,
+}: {
+  targetType: string;
+  rankType: string;
+  expanded: boolean;
+  onToggleExpand: () => void;
+}) => {
+  const { products } = useRankingProducts({ targetType, rankType });
+
+  return (
+    <section css={rankingDiv}>
+      {products.length === 0 ? (
+        <div css={loadingStyle}>
+          <p>상품이 없습니다.</p>
+        </div>
+      ) : (
+        <>
+          <ProductRankingList products={products} expanded={expanded} />
+          <div css={spacer32} />
+          <div css={moreButtonCover}>
+            <button
+              css={moreButton}
+              type="button"
+              onClick={onToggleExpand}
+              disabled={products.length === 0}
+            >
+              <p css={moreButtonText}>{expanded ? '접기' : '더보기'}</p>
+            </button>
+          </div>
+        </>
+      )}
+    </section>
+  );
+};
+
 const Realtime = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -201,11 +240,7 @@ const Realtime = () => {
   const [selectedTarget, setSelectedTarget] = useState(initialTarget);
   const [selectedSort, setSelectedSort] = useState(initialSort);
   const [userHasSelected, setUserHasSelected] = useState(false);
-
-  const { loading, error, products } = useRankingProducts({
-    targetType: selectedTarget,
-    rankType: selectedSort,
-  });
+  const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
     if (!userHasSelected && [...searchParams].length === 0) {
@@ -224,8 +259,6 @@ const Realtime = () => {
       });
     }
   }, [selectedTarget, selectedSort, userHasSelected, setSearchParams]);
-
-  const [expanded, setExpanded] = useState(false);
 
   const getButtonDivStyle = (key: string) => css`
     ${buttonDivBase};
@@ -289,34 +322,15 @@ const Realtime = () => {
           ))}
         </div>
         <div css={spacer16} />
-        <section css={rankingDiv}>
-          {loading ? (
-            <Loading />
-          ) : error ? (
-            <div css={loadingStyle}>
-              <p>데이터를 불러오는 중 오류가 발생했습니다.</p>
-            </div>
-          ) : products.length === 0 ? (
-            <div css={loadingStyle}>
-              <p>상품이 없습니다.</p>
-            </div>
-          ) : (
-            <>
-              <ProductRankingList products={products} expanded={expanded} />
-              <div css={spacer32} />
-              <div css={moreButtonCover}>
-                <button
-                  css={moreButton}
-                  type="button"
-                  onClick={() => setExpanded((prev) => !prev)}
-                  disabled={loading || error || products.length === 0}
-                >
-                  <p css={moreButtonText}>{expanded ? '접기' : '더보기'}</p>
-                </button>
-              </div>
-            </>
-          )}
-        </section>
+
+        <Suspense fallback={<Loading />}>
+          <RankingSection
+            targetType={selectedTarget}
+            rankType={selectedSort}
+            expanded={expanded}
+            onToggleExpand={() => setExpanded((prev) => !prev)}
+          />
+        </Suspense>
       </section>
       <div css={spacer40} />
     </>

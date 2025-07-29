@@ -8,14 +8,19 @@ import '@src/styles/reset.css';
 import { UserInfoProvider } from '@src/contexts/AuthContext';
 import ScrollToTop from '@/components/ScrollToTop';
 
+import ErrorBoundary from '@src/components/common/ErrorBoundary';
+import ErrorFallback from '@src/components/common/ErrorFallback';
+
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById('root')!).render(
   <QueryClientProvider client={queryClient}>
     <UserInfoProvider>
       <BrowserRouter>
-        <ScrollToTop />
-        <App />
+        <ErrorBoundary fallback={<ErrorFallback />}>
+          <ScrollToTop />
+          <App />
+        </ErrorBoundary>
       </BrowserRouter>
     </UserInfoProvider>
   </QueryClientProvider>

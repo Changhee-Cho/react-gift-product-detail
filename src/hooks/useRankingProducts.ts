@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import apiClient from '@src/lib/apiClient';
 import { REALTIME_API_URL } from '@src/apis/constants';
 import { STALE_TIME } from '@/constants/apiReactQueryStaleTime';
@@ -24,7 +24,6 @@ export type RankingProductParams = {
   rankType: string;
 };
 
-
 const fetchRankingProducts = async ({
   targetType,
   rankType,
@@ -36,7 +35,6 @@ const fetchRankingProducts = async ({
 };
 
 type RankingProductState = {
-  loading: boolean;
   error: boolean;
   products: Product[];
 };
@@ -45,7 +43,7 @@ const useRankingProducts = ({
   targetType,
   rankType,
 }: RankingProductParams): RankingProductState => {
-  const { data, isLoading, isError } = useQuery<Product[], Error>({
+  const { data, isError } = useSuspenseQuery<Product[], Error>({
     queryKey: ['rankingProducts', targetType, rankType],
     queryFn: () => fetchRankingProducts({ targetType, rankType }),
     staleTime: STALE_TIME,
@@ -53,7 +51,6 @@ const useRankingProducts = ({
   });
 
   return {
-    loading: isLoading,
     error: isError,
     products: data ?? [],
   };
