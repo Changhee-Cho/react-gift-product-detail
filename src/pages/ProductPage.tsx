@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { getOrderDetailPath } from '@/constants/routes';
 import { css } from '@emotion/react';
 import theme from '@/styles/tokens';
+import { useWishUpdateMutation } from '@/hooks/useWishUpdateMutation';
 
 const divCover = css`
   width: 100%;
@@ -22,7 +23,10 @@ const lineDiv8px = css`
 const ProductPage = () => {
   const { productId } = useParams<{ productId: string }>();
   const id = productId ? Number(productId) : 0;
+
   const { info, detail, review, wish } = useProduct(id);
+  const { mutate: updateWish } = useWishUpdateMutation(id);
+
   const [hearted, setHearted] = useState(false);
   const [wishCount, setWishCount] = useState(0);
 
@@ -38,14 +42,13 @@ const ProductPage = () => {
   const goOrder = () => {
     navigate(getOrderDetailPath(id));
   };
+
   const handleHeartClick = () => {
-    if (!hearted) {
-      setHearted(true);
-      setWishCount((prev) => prev + 1);
-    } else {
-      setHearted(false);
-      setWishCount((prev) => (prev > 0 ? prev - 1 : 0));
-    }
+    const newHearted = !hearted;
+    setHearted(newHearted);
+    setWishCount((prev) => (newHearted ? prev + 1 : Math.max(prev - 1, 0)));
+
+    updateWish();
   };
 
   return (
