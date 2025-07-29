@@ -13,7 +13,6 @@ const rankingGrid = css`
   grid-template-columns: repeat(3, 1fr);
   gap: 24px 8px;
 `;
-
 const rankingItemBox = css`
   width: 100%;
   position: relative;
@@ -21,7 +20,6 @@ const rankingItemBox = css`
     cursor: pointer;
   }
 `;
-
 const rankingNumberWins = css`
   position: absolute;
   z-index: ${theme.zIndex.itemRankingBadge};
@@ -31,14 +29,13 @@ const rankingNumberWins = css`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 0.75rem;
-  font-weight: 700;
+  font-size: ${theme.typography.label2Bold.fontSize};
+  font-weight: ${theme.typography.label2Bold.fontWeight};
   top: 0.25rem;
   left: 0.25rem;
-  color: #fff;
+  color: ${theme.colors.gray00};
   background-color: ${theme.colors.red600};
 `;
-
 const rankingNumber = css`
   position: absolute;
   z-index: ${theme.zIndex.itemRankingBadge};
@@ -48,18 +45,16 @@ const rankingNumber = css`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 0.75rem;
-  font-weight: 700;
+  font-size: ${theme.typography.label2Bold.fontSize};
+  font-weight: ${theme.typography.label2Bold.fontWeight};
   top: 0.25rem;
   left: 0.25rem;
   color: #fff;
   background-color: ${theme.colors.textSub};
 `;
-
 const rankingItemInfo = css`
   width: 100%;
 `;
-
 const rankingItemImg = css`
   width: 100%;
   object-fit: cover;
@@ -67,23 +62,21 @@ const rankingItemImg = css`
   border-radius: 4px;
   overflow: hidden;
 `;
-
 const rankingItemBrand = css`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 0.875rem;
-  font-weight: 400;
-  line-height: 1.1875rem;
+  font-size: ${theme.typography.subtitle2Regular.fontSize};
+  font-weight: ${theme.typography.subtitle2Regular.fontWeight};
+  line-height: ${theme.typography.subtitle2Regular.lineHeight};
   color: ${theme.colors.textSub};
   margin: 0px;
   text-align: left;
 `;
-
 const rankingItemName = css`
-  font-size: 0.875rem;
-  font-weight: 400;
-  line-height: 1.1875rem;
+  font-size: ${theme.typography.subtitle2Regular.fontSize};
+  font-weight: ${theme.typography.subtitle2Regular.fontWeight};
+  line-height: ${theme.typography.subtitle2Regular.lineHeight};
   color: ${theme.colors.textDefault};
   margin: 0px;
   text-align: left;
@@ -91,23 +84,20 @@ const rankingItemName = css`
   text-overflow: ellipsis;
   display: -webkit-box;
 `;
-
 const rankingItemPrice = css`
-  font-size: 1rem;
-  font-weight: 700;
-  line-height: 1.5rem;
+  font-size: ${theme.typography.title2Bold.fontSize};
+  font-weight: ${theme.typography.title2Bold.fontWeight};
+  line-height: ${theme.typography.title2Bold.lineHeight};
   color: ${theme.colors.textDefault};
   margin: 0px;
   text-align: left;
   word-break: break-word;
 `;
-
 const spacer12 = css`
-  height: 12px;
+  height: ${theme.spacing.spacing3};
 `;
-
 const spacer4 = css`
-  height: 4px;
+  height: ${theme.spacing.spacing1};
 `;
 
 type Product = {
@@ -130,8 +120,8 @@ const ProductRankingList = ({ products, expanded }: Props) => {
     ? EXPANDED_DISPLAY_COUNT
     : DEFAULT_DISPLAY_COUNT;
 
-  const goOrder = (id: number) => {
-    navigateIfLoggedIn(`/order/${id}`);
+  const goItem = (id: number) => {
+    navigateIfLoggedIn(`/product/${id}`);
   };
 
   return (
@@ -142,7 +132,7 @@ const ProductRankingList = ({ products, expanded }: Props) => {
           <div
             css={rankingItemBox}
             key={product.id}
-            onClick={() => goOrder(product.id)}
+            onClick={() => goItem(product.id)}
           >
             <span
               css={rank <= TOP_RANK_COUNT ? rankingNumberWins : rankingNumber}

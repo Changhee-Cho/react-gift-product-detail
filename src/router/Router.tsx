@@ -7,6 +7,7 @@ import Order from '@/pages/Order';
 import PrivateRoute from '@/router/PrivateRoute';
 import ROUTES from '@/constants/routes';
 import ThemeItemListPage from '@/pages/ThemeItemListPage';
+import ProductPage from '@/pages/ProductPage';
 
 const Router = () => {
   return (
@@ -32,6 +33,14 @@ const Router = () => {
         }
       />
 
+      <Route
+        path={ROUTES.PRODUCT_PAGE}
+        element={
+          <PrivateRoute>
+            <ProductPage />
+          </PrivateRoute>
+        }
+      />
       <Route path={ROUTES.NOT_FOUND} element={<NotFound />} />
     </Routes>
   );
