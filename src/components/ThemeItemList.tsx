@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { useAuthNavigation } from '@/hooks/useAuthNavigation';
 import loadingGif from '@src/assets/icons/loading.gif';
 import { useThemeItemList } from '@/hooks/useThemeItemList';
-import Loading from './common/Loading';
+import Loading from '@src/components/common/Loading';
 
 const NO_ITEMS_MESSAGE = '상품이 없습니다.';
 
@@ -110,8 +110,8 @@ const ThemeItemList = () => {
 
   const { navigateIfLoggedIn } = useAuthNavigation();
 
-  const goOrder = (id: number) => {
-    navigateIfLoggedIn(`/order/${id}`);
+  const goItem = (id: number) => {
+    navigateIfLoggedIn(`/product/${id}`);
   };
 
   if (loading && items.length === 0) return <Loading />;
@@ -128,7 +128,7 @@ const ThemeItemList = () => {
       <div css={divItemList}>
         {items.map((item) => {
           return (
-            <div key={item.id} css={linkStyle} onClick={() => goOrder(item.id)}>
+            <div key={item.id} css={linkStyle} onClick={() => goItem(item.id)}>
               <div css={itemBox}>
                 <img css={itemImgStyle} src={item.imageURL} alt={item.name} />
                 <div css={spacer12} />

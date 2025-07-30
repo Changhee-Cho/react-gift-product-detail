@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { fetchProductSummary } from '@/apis/orderPage';
 import type { Product } from '@/types/product';
 import ROUTES from '@/constants/routes';
@@ -27,16 +27,17 @@ export const useFetchProduct = (productId?: string) => {
       if (status >= 400 && status < 500) {
         toast.error(errorMessage);
         navigate(ROUTES.HOME);
+        return null;
       }
+      throw error;
     }
   };
 
-  const { data, isLoading: loading } = useQuery<Product | null, unknown>({
+  const { data } = useSuspenseQuery<Product | null>({
     queryKey: ['product', productId],
     queryFn: fetcher,
-    enabled: Boolean(productId),
     staleTime: STALE_TIME,
   });
 
-  return { product: data ?? null, loading };
+  return { product: data ?? null };
 };
