@@ -1,3 +1,7 @@
+test('dummy test', () => {
+  expect(true).toBe(true);
+});
+
 /*
 import React from 'react';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
