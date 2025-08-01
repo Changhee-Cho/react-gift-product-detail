@@ -1,5 +1,10 @@
 import * as path from 'path';
+import { fileURLToPath } from 'url'; 
+import { dirname } from 'path';  
 import type { Config } from 'jest';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const config: Config = {
   preset: 'ts-jest/presets/default-esm',
