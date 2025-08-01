@@ -62,7 +62,6 @@ describe('RecipientForm', () => {
 
     const nameInput = screen.getByPlaceholderText('이름을 입력하세요.');
     fireEvent.change(nameInput, { target: { value: '김철수' } });
-
     expect(mockOnChange).toHaveBeenCalledWith('recipientName', '김철수');
   });
 
