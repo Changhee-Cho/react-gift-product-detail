@@ -1,6 +1,9 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "module": "ESNext",                       
+    "moduleResolution": "node",              
+    "target": "ES2020",                     
     "noEmit": false,
     "jsx": "react-jsx",
     "jsxImportSource": "@emotion/react",
@@ -9,7 +12,8 @@
     "paths": {
       "@/*": ["src/*"],
       "@src/*": ["src/*"]
-    }
+    },
+    "types": ["jest", "node"]                
   },
-  "include": ["src", "src/types", "src/components/__tests__"]
+  "include": ["src", "src/types", "src/components/__tests__", "jest.config.ts"]
 }
