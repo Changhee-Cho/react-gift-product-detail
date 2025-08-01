@@ -1,15 +1,16 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import OrderForm from '@src/components/OrderForm';
+import { vi, describe, it, beforeEach, expect } from 'vitest';
 
-jest.mock('react-hook-form', () => ({
+vi.mock('react-hook-form', () => ({
   useFormContext: () => ({
-    register: jest.fn(() => ({})),
+    register: vi.fn(() => ({})),
     formState: { errors: {} },
-    setValue: jest.fn(),
+    setValue: vi.fn(),
   }),
 }));
 
-jest.mock('@/contexts/AuthContext', () => ({
+vi.mock('@/contexts/AuthContext', () => ({
   useUserInfo: () => ({
     user: { name: '테스트 유저' },
     loading: false,
@@ -17,10 +18,10 @@ jest.mock('@/contexts/AuthContext', () => ({
 }));
 
 describe('OrderForm', () => {
-  const mockOpenModal = jest.fn();
+  const mockOpenModal = vi.fn();
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('보내는 사람 입력창과 받는 사람이 없을 때 받는 사람 섹션이 렌더링되어야 한다', () => {
@@ -39,8 +40,7 @@ describe('OrderForm', () => {
     expect(screen.getByText('받는 사람')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: '추가' })).toBeInTheDocument();
 
-    const noRecipientText = screen.getByText(/받는 사람이 없습니다/);
-    expect(noRecipientText).toBeInTheDocument();
+    expect(screen.getByText(/받는 사람이 없습니다/)).toBeInTheDocument();
   });
 
   it('받는 사람이 있을 때 받는 사람 목록과 버튼 텍스트가 "수정"으로 렌더링되어야 한다', () => {
@@ -60,9 +60,7 @@ describe('OrderForm', () => {
     );
 
     expect(screen.getByRole('button', { name: '수정' })).toBeInTheDocument();
-
     expect(screen.queryByText(/받는 사람이 없습니다/)).not.toBeInTheDocument();
-
     expect(screen.getByText('홍길동')).toBeInTheDocument();
   });
 
