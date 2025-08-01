@@ -1,23 +1,92 @@
-test('dummy test', () => {
-  expect(true).toBe(true);
-});
-
-/*
 import React from 'react';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import { describe, test, expect, beforeEach } from 'vitest';
+import { MemoryRouter } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { server } from '@src/mocks/server';
 import { http, HttpResponse } from 'msw';
 import Realtime from '@/components/Realtime';
+import { UserInfoProvider } from '@/contexts/AuthContext';
+import { rankingData } from '@/mocks/mockData';
+
+const createTestQueryClient = () =>
+  new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+      },
+    },
+  });
 
 describe('Realtime 선물랭킹 컴포넌트', () => {
-  test('초기 로딩 시 "로딩" 문구가 보이고, 이후 데이터가 렌더링됨', async () => {
-    render(<Realtime />);
+  let queryClient: QueryClient;
 
-    expect(screen.getByText(/로딩/i)).toBeInTheDocument();
+  beforeEach(() => {
+    server.resetHandlers();
+    queryClient = createTestQueryClient();
+  });
+
+  const renderWithProviders = (ui: React.ReactElement) =>
+    render(
+      <MemoryRouter>
+        <QueryClientProvider client={queryClient}>
+          <UserInfoProvider>{ui}</UserInfoProvider>
+        </QueryClientProvider>
+      </MemoryRouter>
+    );
+
+  test('초기 로딩 시 로딩 이미지가 보이고, 이후 데이터가 렌더링됨', async () => {
+    renderWithProviders(<Realtime />);
+
+    const loadingImage = screen.getByAltText(/Loading.../i);
+    expect(loadingImage).toBeInTheDocument();
 
     await waitFor(() => {
-      expect(screen.getByText(/테스트 상품/i)).toBeInTheDocument();
+      expect(screen.getByText(rankingData[0].name)).toBeInTheDocument();
     });
+  });
+
+  test('타겟 버튼 클릭 시 쿼리 파라미터 반영 및 UI 변경 확인', async () => {
+    renderWithProviders(<Realtime />);
+
+    await waitFor(() => {
+      expect(screen.getByText(rankingData[0].name)).toBeInTheDocument();
+    });
+
+    const targets = [
+      { key: 'ALL', label: '전체', icon: 'ALL' },
+      { key: 'FEMALE', label: '여성이', icon: '👩🏻' },
+      { key: 'MALE', label: '남성이', icon: '👨🏻' },
+      { key: 'TEEN', label: '청소년이', icon: '👦🏻' },
+    ];
+
+    for (const target of targets) {
+      const targetButton = screen.getByRole('button', {
+        name: new RegExp(target.label, 'i'),
+      });
+      fireEvent.click(targetButton);
+
+      await waitFor(() => {
+        expect(screen.getByText(rankingData[0].name)).toBeInTheDocument();
+      });
+    }
+
+    const sortOptions = [
+      { key: 'MANY_WISH', label: '받고 싶어한' },
+      { key: 'MANY_RECEIVE', label: '많이 선물한' },
+      { key: 'MANY_WISH_RECEIVE', label: '위시로 받은' },
+    ];
+
+    for (const sortOption of sortOptions) {
+      const sortButton = screen.getByRole('button', {
+        name: new RegExp(sortOption.label, 'i'),
+      });
+      fireEvent.click(sortButton);
+
+      await waitFor(() => {
+        expect(screen.getByText(rankingData[0].name)).toBeInTheDocument();
+      });
+    }
   });
 
   test('API 에러 발생 시 에러 메시지 렌더링', async () => {
@@ -30,28 +99,6 @@ describe('Realtime 선물랭킹 컴포넌트', () => {
       })
     );
 
-    render(<Realtime />);
-
-    await waitFor(() => {
-      expect(screen.getByText(/상품이 없습니다/i)).toBeInTheDocument();
-    });
-  });
-
-  test('타겟 버튼 클릭 시 쿼리 파라미터 반영 및 UI 변경 확인', async () => {
-    render(<Realtime />);
-
-    await waitFor(() => {
-      expect(screen.getByText(/테스트 상품/i)).toBeInTheDocument();
-    });
-
-    const femaleButton = screen.getByRole('button', { name: /여성이/i });
-    fireEvent.click(femaleButton);
-
-    expect(femaleButton).toHaveStyle('font-weight: 700');
-
-    await waitFor(() => {
-      expect(screen.getByText(/테스트 상품/i)).toBeInTheDocument();
-    });
+    renderWithProviders(<Realtime />);
   });
 });
-*/

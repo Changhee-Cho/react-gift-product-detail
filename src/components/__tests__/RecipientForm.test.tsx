@@ -1,6 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import RecipientForm from '../RecipientForm';
 import type { OrderValues } from '@src/hooks/useOrderForm';
+import { vi, beforeEach, describe, it, expect } from 'vitest';
 
 describe('RecipientForm', () => {
   const mockValues: OrderValues = {
@@ -15,12 +16,12 @@ describe('RecipientForm', () => {
     quantity: '',
   };
 
-  const mockOnChange = jest.fn();
-  const mockOnRemove = jest.fn();
-  const mockOnBlur = jest.fn();
+  const mockOnChange = vi.fn();
+  const mockOnRemove = vi.fn();
+  const mockOnBlur = vi.fn();
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('모든 필드와 기본 텍스트가 잘 렌더링되어야 한다', () => {

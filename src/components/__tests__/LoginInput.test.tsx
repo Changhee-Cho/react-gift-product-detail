@@ -2,15 +2,17 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Login from '@src/components/Login';
 import { MemoryRouter } from 'react-router-dom';
+import { vi } from 'vitest';
+import tokens from '@src/styles/tokens/index';
 
-jest.mock('@/contexts/AuthContext', () => ({
-  useUserInfo: () => ({ setUser: jest.fn() }),
+vi.mock('@/contexts/AuthContext', () => ({
+  useUserInfo: () => ({ setUser: vi.fn() }),
 }));
 
-jest.mock('@/hooks/useLoginMutation', () => ({
+vi.mock('@/hooks/useLoginMutation', () => ({
   __esModule: true,
   default: () => ({
-    mutateAsync: jest.fn(),
+    mutateAsync: vi.fn(),
     isPending: false,
   }),
 }));
@@ -46,9 +48,7 @@ describe('Login 페이지 - ID, PW 유효성 검사 및 버튼 활성화', () =>
 
     const error = await screen.findByText('ID는 이메일 형식으로 입력해주세요.');
     expect(error).toBeVisible();
-    expect(error).toHaveStyle(
-      `color: ${require('@src/styles/tokens/index').default.colors.red700}`
-    );
+    expect(error).toHaveStyle(`color: ${tokens.colors.red700}`);
     expect(loginButton()).toBeDisabled();
   });
 
@@ -72,9 +72,7 @@ describe('Login 페이지 - ID, PW 유효성 검사 및 버튼 활성화', () =>
 
     const error = await screen.findByText('PW는 최소 8글자 이상이어야 합니다.');
     expect(error).toBeVisible();
-    expect(error).toHaveStyle(
-      `color: ${require('@src/styles/tokens/index').default.colors.red700}`
-    );
+    expect(error).toHaveStyle(`color: ${tokens.colors.red700}`);
     expect(loginButton()).toBeDisabled();
   });
 
