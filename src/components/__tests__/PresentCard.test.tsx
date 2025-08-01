@@ -43,7 +43,7 @@ describe('PresentCard 컴포넌트 테스트', () => {
     expect(cards.length).toBe(templates.length + 1);
   });
 
-  it('첫 번째 카드가 기본 선택 상태임을 확인', () => {
+  it('첫 번째 카드가 기본 선택 상태임을 확인한다', () => {
     render(
       <WrapperWithForm
         defaultValues={{
@@ -60,7 +60,7 @@ describe('PresentCard 컴포넌트 테스트', () => {
     );
   });
 
-  it('두 번째 카드 클릭 후 테두리 변경 확인', () => {
+  it('두 번째 카드 클릭 후 테두리 변경 확인한다', () => {
     render(
       <WrapperWithForm
         defaultValues={{

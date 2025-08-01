@@ -30,7 +30,7 @@ describe('Login 페이지 - ID, PW 유효성 검사 및 버튼 활성화', () =>
   const pwInput = () => screen.getByPlaceholderText('비밀번호');
   const loginButton = () => screen.getByRole('button', { name: /로그인/i });
 
-  it('초기 상태에서 버튼은 비활성화, 에러 메시지는 없다', () => {
+  it('초기 상태에서 버튼은 비활성화, 에러 메시지는 없어아 한다', () => {
     expect(idInput()).toBeInTheDocument();
     expect(pwInput()).toBeInTheDocument();
     expect(loginButton()).toBeDisabled();
@@ -41,7 +41,7 @@ describe('Login 페이지 - ID, PW 유효성 검사 및 버튼 활성화', () =>
     expect(screen.queryByText(/최소 8글자/)).not.toBeInTheDocument();
   });
 
-  it('잘못된 이메일 형식 입력 후 blur 시 "ID는 이메일 형식으로 입력해주세요." 에러 메시지와 빨간색 표시', async () => {
+  it('잘못된 이메일 형식 입력 후 blur시 "ID는 이메일 형식으로 입력해주세요." 빨간색 에러 메시지를 표시한다', async () => {
     userEvent.clear(idInput());
     await userEvent.type(idInput(), 'not-an-email');
     userEvent.tab();
@@ -65,7 +65,7 @@ describe('Login 페이지 - ID, PW 유효성 검사 및 버튼 활성화', () =>
     });
   });
 
-  it('8글자 미만 PW 입력 후 blur 시 "PW는 최소 8글자 이상이어야 합니다." 에러 메시지와 빨간색 표시', async () => {
+  it('8글자 미만 PW 입력 후 blur 시 "PW는 최소 8글자 이상이어야 합니다." 빨간색 에러 메시지를 표시한다', async () => {
     userEvent.clear(pwInput());
     await userEvent.type(pwInput(), 'short');
     userEvent.tab();
@@ -89,7 +89,7 @@ describe('Login 페이지 - ID, PW 유효성 검사 및 버튼 활성화', () =>
     });
   });
 
-  it('ID 또는 PW가 유효하지 않으면 로그인 버튼은 비활성화 상태 유지', async () => {
+  it('ID 또는 PW가 유효하지 않으면 로그인 버튼은 비활성화 상태 유지한다', async () => {
     await userEvent.type(idInput(), 'invalid-email');
     await userEvent.type(pwInput(), 'validpassword');
     userEvent.tab();

@@ -35,7 +35,7 @@ describe('Realtime 선물랭킹 컴포넌트', () => {
       </MemoryRouter>
     );
 
-  test('초기 로딩 시 로딩 이미지가 보이고, 이후 데이터가 렌더링됨', async () => {
+  test('초기 로딩 시 로딩 이미지가 보이고, 이후 데이터가 렌더링된다', async () => {
     renderWithProviders(<Realtime />);
 
     const loadingImage = screen.getByAltText(/Loading.../i);
@@ -46,7 +46,7 @@ describe('Realtime 선물랭킹 컴포넌트', () => {
     });
   });
 
-  test('타겟 버튼 클릭 시 쿼리 파라미터 반영 및 UI 변경 확인', async () => {
+  test('타겟 버튼 클릭 시 쿼리 파라미터 반영 및 UI 변경을 확인한다', async () => {
     renderWithProviders(<Realtime />);
 
     await waitFor(() => {
@@ -95,7 +95,7 @@ describe('Realtime 선물랭킹 컴포넌트', () => {
     }
   });
 
-  test('API 에러 발생 시 에러 메시지 렌더링', async () => {
+  test('API 에러 발생 시 에러 메시지 렌더링한다', async () => {
     server.use(
       http.get('/api/products/ranking', () => {
         return HttpResponse.json(
