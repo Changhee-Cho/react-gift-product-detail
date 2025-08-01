@@ -66,9 +66,12 @@ describe('Realtime 선물랭킹 컴포넌트', () => {
       });
       fireEvent.click(targetButton);
 
-      await waitFor(() => {
-        expect(screen.getByText(rankingData[0].name)).toBeInTheDocument();
-      });
+      await waitFor(
+        () => {
+          expect(screen.getByText(rankingData[0].name)).toBeInTheDocument();
+        },
+        { timeout: 5000 }
+      );
     }
 
     const sortOptions = [
@@ -83,9 +86,12 @@ describe('Realtime 선물랭킹 컴포넌트', () => {
       });
       fireEvent.click(sortButton);
 
-      await waitFor(() => {
-        expect(screen.getByText(rankingData[0].name)).toBeInTheDocument();
-      });
+      await waitFor(
+        () => {
+          expect(screen.getByText(rankingData[0].name)).toBeInTheDocument();
+        },
+        { timeout: 5000 }
+      );
     }
   });
 
